@@ -1,0 +1,99 @@
+﻿<controls:MetroWindow x:Class="RESI.Sorter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Season.SVT"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" 
+        mc:Ignorable="d"   ShowCloseButton="False" ShowDialogsOverTitleBar="False"
+                      ShowIconOnTitleBar="False" ShowMaxRestoreButton="False" WindowStartupLocation="CenterScreen"
+                      ShowMinButton="False" ShowTitleBar="False" ShowSystemMenuOnRightClick="False" SaveWindowPosition="True"
+      Height="768" Width="1024">
+    <md:DialogHost x:Name="MainDialogHost" Identifier="RootDialog">
+        <md:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"  BorderBrush="#6c7c89" BorderThickness="1">
+            <md:DrawerHost.LeftDrawerContent >
+                <DockPanel MinWidth="150" >
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                        DockPanel.Dock="Top"
+                                        HorizontalAlignment="Right" 
+                                  Margin="10 10 25 0"
+                                  Height="30"
+                                  Width="30"
+                                        IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                    <ListBox SelectedIndex="0" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp" ItemsSource="{Binding Items}" x:Name="ItemListBox" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="viewmodel:ContorllerItem">
+                                <TextBlock Text="{Binding Name}" Margin="32 0 32 0" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </md:DrawerHost.LeftDrawerContent>
+            <DockPanel Background="{DynamicResource MaterialDesignPaper}">
+                <md:ColorZone DockPanel.Dock="Top"  Height="60"  MouseDoubleClick="ColorZone_MouseDoubleClick"  MouseDown="ColorZone_MouseDown"  md:ShadowAssist.ShadowDepth="Depth2">
+                    <DockPanel Height="60" Background="Gray">
+                        <Image Margin=" 5"  Source="Image/Logo.png" />
+                        <StackPanel VerticalAlignment="Center" Margin="10 0 0 5" >
+                            <TextBlock x:Name="txtSelfName" Margin="1 3" Foreground="White" FontSize="18" Text="力斯智能分拣系统V1.3" HorizontalAlignment="Left"></TextBlock>
+                            <TextBlock Margin="1 2" FontSize="11" Foreground="White"  Text="©Copyright深圳市力斯物流自动化设备有限公司" HorizontalAlignment="Left"></TextBlock>
+                        </StackPanel>
+                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
+                         x:Name="MenuToggleButton" ToolTip="功能目录"  Height="40"  Width="30" Margin="10 0"
+                              HorizontalAlignment="Right"  />
+                        <StackPanel HorizontalAlignment="Right"  DockPanel.Dock="Right"   Orientation="Horizontal">
+                            <Label x:Name="lbMain" FontSize="27" Background="White" VerticalContentAlignment="Center" Padding="15 0" MouseLeftButtonDown="Label_MouseLeftButtonDown">
+                                主 页
+                            </Label>
+                            <Label x:Name="lbQeury" FontSize="27" Margin="3 0 3 0" VerticalContentAlignment="Center" Padding="15 0" MouseLeftButtonDown="Label_MouseLeftButtonDown_1">
+                                查 询
+                            </Label>
+                            <Label x:Name="lbSetting" FontSize="27" Margin="3 0 3 0" VerticalContentAlignment="Center" Padding="15 0" MouseLeftButtonDown="Label_MouseLeftButtonDown_2">
+                                设 置
+                            </Label>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}" Width="30" Padding="0" 
+                                    Click="ButtonBase_OnClick" ToolTip="最小化">
+                                <md:PackIcon Kind="Minus" Width="30" Height="30" Foreground="{DynamicResource MaterialDesignBody}" />
+                            </Button>
+                            <Button Margin="10 0" Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Width="30"
+                                     Click="CloseWindow_OnClick" ToolTip="关闭软件">
+                                <md:PackIcon Kind="Close" Width="30" Height="30" Foreground="#e64a19" />
+                            </Button>
+                        </StackPanel>
+                    </DockPanel>
+                </md:ColorZone>
+                <md:ColorZone  Background="Gray" Opacity="0.8" DockPanel.Dock="Bottom" Height="30" md:ShadowAssist.ShadowDepth="Depth2">
+                    <md:ColorZone.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="25"></Setter>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Style>
+                    </md:ColorZone.Resources>
+                    <Grid>
+
+                        <StackPanel x:Name="StatusPanel" Orientation="Horizontal" Grid.Row="1">
+
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right">
+                            <TextBlock FontSize="17" Margin="5" x:Name="txtClock">2017-05-28 10:56:23</TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </md:ColorZone>
+
+                <Grid>
+                    <ScrollViewer 
+                                  HorizontalScrollBarVisibility="{Binding ElementName=ItemListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
+                                  VerticalScrollBarVisibility="{Binding ElementName=ItemListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}" 
+                                  Padding="3">
+                        <!--Padding="{Binding ElementName=ItemListBox, Path=SelectedItem.MarginRequirement}"-->
+                        <ContentControl Content="{Binding ElementName=ItemListBox, Path=SelectedItem.Content}" />
+                    </ScrollViewer>
+                    <md:Snackbar MessageQueue="{md:MessageQueue}" x:Name="MainSnackbar"/>
+                </Grid>
+
+            </DockPanel>
+        </md:DrawerHost>
+    </md:DialogHost>
+</controls:MetroWindow>
