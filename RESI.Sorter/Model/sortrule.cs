@@ -11,9 +11,10 @@ namespace RESI.Sorter
     public class SortDoor
     {
         public int id { get; set; }
-        public string door_id { get; set; }
+        public string door_code { get; set; }
         public string door_name { get; set; }
         public int door_status { get; set; }
+        public double sort_time { get; set; }
         public SortRule sortRule { get; set; }
     }
     public class SortRule : INotifyPropertyChanged
@@ -29,17 +30,17 @@ namespace RESI.Sorter
             return args => PropertyChanged?.Invoke(this, args);
         }
         public int id { get; set; }
-        public string rule_id { get; set; }
+        public string rule_code { get; set; }
         public string rule_name { get; set; }
-        private string _door_id;
+        private string _door_code;
 
-        public string door_id
+        public string door_code
         {
-            get { return _door_id; }
+            get { return _door_code; }
             set
             {
-                _door_id = value;
-                OnPropertyChanged("door_id");
+                _door_code = value;
+                OnPropertyChanged("door_code");
             }
         }
 

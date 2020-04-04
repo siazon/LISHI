@@ -43,17 +43,22 @@ namespace RESI.Sorter
         {
             InitializeComponent();
             this.DataContext = this;
+
+            RunFlowDoc.Blocks.Add(Runparagraph);
+            Connectlist.Document = RunFlowDoc;
             LiteDBHelper.Ins.InitDB("DoorDB", Environment.CurrentDirectory + "/");
+            brush = FindResource("AccentColorBrush") as SolidColorBrush;
             TcpServer = new SocketManager(4000);
             TcpServer.OnReceiveMsg += TcpServer_OnReceiveMsg;
             TcpServer.OnConnected += TcpServer_OnConnected;
             TcpServer.OnDisConnected += TcpServer_OnDisConnected;
             TcpServer.Start();
+            AddLine("分拣机构连接中...",1);
             Items = new[]
             {
                 new ContorllerItem("主页",new MainView()),
                 new ContorllerItem("查询",new QueryView()),
-                new ContorllerItem("设置",new SettingView()),
+                new ContorllerItem("设置",new SettingMainView()),
             };
             Task.Run(() =>
             {
@@ -112,6 +117,7 @@ namespace RESI.Sorter
                 else
                     dicTcp.Add("SCAN", remote);
             }
+            AddLine("分拣机械连接成功",0);
         }
 
         private void TcpServer_OnReceiveMsg(SocketManager.SocketInfo socketInfo)
@@ -138,27 +144,37 @@ namespace RESI.Sorter
             }
         }
 
+        SolidColorBrush brush = new SolidColorBrush(Colors.White);
         private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ItemListBox.SelectedIndex = 0;
             lbMain.Background = new SolidColorBrush(Colors.White);
-            lbQeury.Background = new SolidColorBrush(Colors.Gray);
-            lbSetting.Background = new SolidColorBrush(Colors.Gray);
+            lbMain.Foreground = new SolidColorBrush(Colors.Black);
+            lbQeury.Background = brush;
+            lbQeury.Foreground = new SolidColorBrush(Colors.White);
+            lbSetting.Background = brush;
+            lbSetting.Foreground = new SolidColorBrush(Colors.White);
         }
 
         private void Label_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
         {
             ItemListBox.SelectedIndex = 1;
-            lbMain.Background = new SolidColorBrush(Colors.Gray);
+            lbMain.Background = brush;
+            lbMain.Foreground = new SolidColorBrush(Colors.White);
             lbQeury.Background = new SolidColorBrush(Colors.White);
-            lbSetting.Background = new SolidColorBrush(Colors.Gray);
+            lbQeury.Foreground = new SolidColorBrush(Colors.Black);
+            lbSetting.Background = brush;
+            lbSetting.Foreground = new SolidColorBrush(Colors.White);
         }
         private void Label_MouseLeftButtonDown_2(object sender, MouseButtonEventArgs e)
         {
             ItemListBox.SelectedIndex = 2;
-            lbMain.Background = new SolidColorBrush(Colors.Gray);
-            lbQeury.Background = new SolidColorBrush(Colors.Gray);
+            lbMain.Background = brush;
+            lbMain.Foreground = new SolidColorBrush(Colors.White);
+            lbQeury.Background = brush;
+            lbQeury.Foreground = new SolidColorBrush(Colors.White);
             lbSetting.Background = new SolidColorBrush(Colors.White);
+            lbSetting.Foreground = new SolidColorBrush(Colors.Black);
         }
         private void ColorZone_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -181,6 +197,50 @@ namespace RESI.Sorter
         private void GetList()
         {
 
+        }
+        public FlowDocument RunFlowDoc = new FlowDocument();
+        public Paragraph Runparagraph = new Paragraph();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="type">0：兰色 1：黑色 2：红色</param>
+        /// <param name="withTime"></param>
+        /// <param name="isEnter"></param>
+        public void AddLine(string content, int type, bool withTime = true, bool isEnter = true)
+        {
+            try
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    string time = "";
+                    if (withTime)
+                        time = DateTime.Now.ToString("HH:mm:ss.fff") + ">>";
+                    Run r = new Run(time + content);
+                    r.FontSize = 18;
+                    if (type == 0)
+                        r.Foreground = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
+                    else if (type == 1)
+                        r.Foreground = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+                    else
+                        r.Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
+                    Runparagraph.Inlines.Add(r);
+                    if (isEnter)
+                        Runparagraph.Inlines.Add("\r");
+                    Connectlist.ScrollToEnd();
+                    int count = Runparagraph.Inlines.Count;
+                    if (count > 200)
+                    {
+                        for (int i = 0; i < 2; i++)
+                        {
+                            Runparagraph.Inlines.Remove(Runparagraph.Inlines.ElementAt(0));
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+            }
         }
     }
 }

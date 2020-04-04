@@ -9,10 +9,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
         <DataGrid  x:Name="mygrid"  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                   ItemsSource="{Binding Records,Mode=TwoWay}"  CanUserSortColumns="False" 
                   materialDesign:DataGridAssist.ColumnHeaderPadding="4"  
@@ -27,8 +23,5 @@
                 <DataGridTextColumn Binding="{Binding door}" IsReadOnly="True"   CanUserSort="False" FontSize="15"  Header="分拣口"  Width="20*" />
             </DataGrid.Columns>
         </DataGrid>
-        <RichTextBox x:Name="Connectlist" Grid.Row="1">
-            
-        </RichTextBox>
     </Grid>
 </UserControl>

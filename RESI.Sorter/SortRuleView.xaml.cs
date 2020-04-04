@@ -23,7 +23,7 @@ namespace RESI.Sorter
     /// <summary>
     /// SettingView.xaml 的交互逻辑
     /// </summary>
-    public partial class SettingView : UserControl, INotifyPropertyChanged
+    public partial class SortRuleView : UserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -81,7 +81,7 @@ namespace RESI.Sorter
         }
         private bool isDoorAdd = false;
         private bool isRuleAdd = false;
-        public SettingView()
+        public SortRuleView()
         {
             InitializeComponent();
             this.DataContext = this;
@@ -107,13 +107,17 @@ namespace RESI.Sorter
         {
 
         }
+
+        #region door
+
         private void Mygrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sortDoor == null) return;
             SortRules.Clear();
-            var temprule = CacheData.Ins.SortRules.FindAll(a=>a.door_id==sortDoor.door_id);
+            var temprule = CacheData.Ins.SortRules.FindAll(a=>a.door_code==sortDoor.door_code);
             SortRules.AddRange(temprule);
         }
+
         private void btnDoorAdd_Click(object sender, RoutedEventArgs e)
         {
             isDoorAdd = true;
@@ -134,7 +138,15 @@ namespace RESI.Sorter
         private void btnDoorDel_Click(object sender, RoutedEventArgs e)
         {
             LiteDBHelper.Ins.Delete<SortDoor>(SortDoor.id);
+            var rules = SortRules.ToList().FindAll(a => a.door_code == SortDoor.door_code);
+            foreach (var item in rules)
+            {
+                LiteDBHelper.Ins.Delete<SortRule>(item.id);
+                SortRules.Remove(item);
+                CacheData.Ins.SortRules.Remove(item);
+            }
             SortDoors.Remove(SortDoor);
+            CacheData.Ins.SortDoors.Remove(SortDoor);
         }
         private void btnDoorSave_Clike(object sender, RoutedEventArgs e)
         {
@@ -153,6 +165,10 @@ namespace RESI.Sorter
                 SortDoors.Remove(SortDoor);
             chkDoorEdit.IsChecked = false;
         }
+
+        #endregion
+        #region Rule
+
         private void btnRuleAdd_Click(object sender, RoutedEventArgs e)
         {
             isRuleAdd = true;
@@ -160,7 +176,7 @@ namespace RESI.Sorter
             chkRuleEdit.IsChecked = !chkRuleEdit.IsChecked;
             SortRule = new SortRule();
             if (sortDoor != null)
-                SortRule.door_id = sortDoor.door_id;
+                SortRule.door_code = sortDoor.door_code;
 
         }
 
@@ -174,8 +190,10 @@ namespace RESI.Sorter
 
         private void btnRuleDel_Click(object sender, RoutedEventArgs e)
         {
+            if (SortRule == null) return;
             LiteDBHelper.Ins.Delete<SortRule>(SortRule.id);
             SortRules.Remove(SortRule);
+            CacheData.Ins.SortRules.Remove(SortRule);
         }
         private void btnRuleSave_Click(object sender, RoutedEventArgs e)
         {
@@ -198,6 +216,8 @@ namespace RESI.Sorter
                 SortRules.Remove(SortRule);
             chkRuleEdit.IsChecked = false;
         }
+
+        #endregion
         private void btnExcel_Click(object sender, RoutedEventArgs e)
         {
 

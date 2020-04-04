@@ -1,7 +1,6 @@
-﻿using NPOI.HSSF.Record;
+﻿using Season.SVT;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,9 +19,9 @@ using System.Windows.Shapes;
 namespace RESI.Sorter
 {
     /// <summary>
-    /// MainView.xaml 的交互逻辑
+    /// SettingMainView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : UserControl, INotifyPropertyChanged
+    public partial class SettingMainView : UserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -34,29 +33,31 @@ namespace RESI.Sorter
         {
             return args => PropertyChanged?.Invoke(this, args);
         }
-        private ObservableCollection<Record> _Records = new ObservableCollection<Record>();
-
-        public ObservableCollection<Record> Records
-        {
-            get { return _Records; }
-            set
-            {
-                _Records = value;
-                OnPropertyChanged("Records");
-            }
-        }
-        public MainView()
+        public ContorllerItem[] Items { get; }
+        public SettingMainView()
         {
             InitializeComponent();
             this.DataContext = this;
-            this.Loaded += MainView_Loaded; 
+            Items = new[]
+          {
+                new ContorllerItem("设置",new SortRuleView()),
+                new ContorllerItem("系统参数",new ParaSettingView()),
+            };
         }
 
-        private void MainView_Loaded(object sender, RoutedEventArgs e)
+        private void ColorZone_MouseDown(object sender, MouseButtonEventArgs e)
         {
-         
+
         }
 
-   
+        private void ColorZone_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

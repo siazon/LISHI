@@ -30,30 +30,32 @@
                     </ListBox>
                 </DockPanel>
             </md:DrawerHost.LeftDrawerContent>
-            <DockPanel Background="{DynamicResource MaterialDesignPaper}">
-                <md:ColorZone DockPanel.Dock="Top"  Height="60"  MouseDoubleClick="ColorZone_MouseDoubleClick"  MouseDown="ColorZone_MouseDown"  md:ShadowAssist.ShadowDepth="Depth2">
-                    <DockPanel Height="60" Background="Gray">
-                        <Image Margin=" 5"  Source="Image/Logo.png" />
+            <DockPanel >
+                <md:ColorZone DockPanel.Dock="Top"  Background="{StaticResource AccentColorBrush}"  Height="60"  MouseDoubleClick="ColorZone_MouseDoubleClick"  MouseDown="ColorZone_MouseDown"  md:ShadowAssist.ShadowDepth="Depth2">
+                    <DockPanel Height="60">
+                        <Border Background="White">
+                            <Image Margin=" 5"  Source="Image/Logo.png" />
+                        </Border>
                         <StackPanel VerticalAlignment="Center" Margin="10 0 0 5" >
                             <TextBlock x:Name="txtSelfName" Margin="1 3" Foreground="White" FontSize="18" Text="力斯智能分拣系统V1.3" HorizontalAlignment="Left"></TextBlock>
                             <TextBlock Margin="1 2" FontSize="11" Foreground="White"  Text="©Copyright深圳市力斯物流自动化设备有限公司" HorizontalAlignment="Left"></TextBlock>
                         </StackPanel>
                         <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
-                         x:Name="MenuToggleButton" ToolTip="功能目录"  Height="40"  Width="30" Margin="10 0"
+                         x:Name="MenuToggleButton" ToolTip="功能目录"  Height="40"  Width="30" Margin="10 0" Visibility="Collapsed"
                               HorizontalAlignment="Right"  />
                         <StackPanel HorizontalAlignment="Right"  DockPanel.Dock="Right"   Orientation="Horizontal">
-                            <Label x:Name="lbMain" FontSize="27" Background="White" VerticalContentAlignment="Center" Padding="15 0" MouseLeftButtonDown="Label_MouseLeftButtonDown">
+                            <Label x:Name="lbMain" FontSize="27" Background="White" Foreground="Black" VerticalContentAlignment="Center" Padding="15 0" MouseLeftButtonDown="Label_MouseLeftButtonDown">
                                 主 页
                             </Label>
-                            <Label x:Name="lbQeury" FontSize="27" Margin="3 0 3 0" VerticalContentAlignment="Center" Padding="15 0" MouseLeftButtonDown="Label_MouseLeftButtonDown_1">
+                            <Label x:Name="lbQeury" FontSize="27" Margin="3 0 3 0" Foreground="White" VerticalContentAlignment="Center" Padding="15 0" MouseLeftButtonDown="Label_MouseLeftButtonDown_1">
                                 查 询
                             </Label>
-                            <Label x:Name="lbSetting" FontSize="27" Margin="3 0 3 0" VerticalContentAlignment="Center" Padding="15 0" MouseLeftButtonDown="Label_MouseLeftButtonDown_2">
+                            <Label x:Name="lbSetting" FontSize="27" Margin="3 0 3 0" Foreground="White" VerticalContentAlignment="Center" Padding="15 0" MouseLeftButtonDown="Label_MouseLeftButtonDown_2">
                                 设 置
                             </Label>
                             <Button Style="{StaticResource MaterialDesignFlatButton}" Width="30" Padding="0" 
                                     Click="ButtonBase_OnClick" ToolTip="最小化">
-                                <md:PackIcon Kind="Minus" Width="30" Height="30" Foreground="{DynamicResource MaterialDesignBody}" />
+                                <md:PackIcon Kind="Minus" Width="30" Height="30" Foreground="White" />
                             </Button>
                             <Button Margin="10 0" Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Width="30"
                                      Click="CloseWindow_OnClick" ToolTip="关闭软件">
@@ -62,7 +64,7 @@
                         </StackPanel>
                     </DockPanel>
                 </md:ColorZone>
-                <md:ColorZone  Background="Gray" Opacity="0.8" DockPanel.Dock="Bottom" Height="30" md:ShadowAssist.ShadowDepth="Depth2">
+                <md:ColorZone  Background="{StaticResource AccentColorBrush}"   DockPanel.Dock="Bottom" Height="200" md:ShadowAssist.ShadowDepth="Depth2">
                     <md:ColorZone.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontSize" Value="25"></Setter>
@@ -72,11 +74,17 @@
                         </Style>
                     </md:ColorZone.Resources>
                     <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <RichTextBox x:Name="Connectlist">
 
+                        </RichTextBox>
                         <StackPanel x:Name="StatusPanel" Orientation="Horizontal" Grid.Row="1">
 
                         </StackPanel>
-                        <StackPanel HorizontalAlignment="Right">
+                        <StackPanel HorizontalAlignment="Right" Grid.Row="1">
                             <TextBlock FontSize="17" Margin="5" x:Name="txtClock">2017-05-28 10:56:23</TextBlock>
                         </StackPanel>
                     </Grid>
