@@ -92,15 +92,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\CacheData.cs" />
+    <Compile Include="Common\ExcelHelper.cs" />
+    <Compile Include="Common\FileHelper.cs" />
     <Compile Include="Common\HttpHelper.cs" />
     <Compile Include="Common\LiteDBHelper.cs" />
     <Compile Include="Common\SocketManager.cs" />
     <Compile Include="Converter\SortRuleConveter.cs" />
+    <Compile Include="Converter\TitleTextBox.cs" />
     <Compile Include="MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Record.cs" />
     <Compile Include="Model\SortRule.cs" />
+    <Compile Include="Model\Sys_Para.cs" />
     <Compile Include="ParaSettingView.xaml.cs">
       <DependentUpon>ParaSettingView.xaml</DependentUpon>
     </Compile>

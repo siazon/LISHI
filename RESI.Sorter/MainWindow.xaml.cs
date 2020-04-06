@@ -1,4 +1,6 @@
 ﻿using LH.Sorter.Util.LiteDB;
+using LiteDB;
+using RESI.Sorter.Common;
 using RESI.Sorter.Model;
 using Season.SVT;
 using System;
@@ -39,6 +41,8 @@ namespace RESI.Sorter
         public ContorllerItem[] Items { get; }
         private SocketManager TcpServer;
         Dictionary<string, string> dicTcp = new Dictionary<string, string>();
+        Dictionary<string, int> SortTime = new Dictionary<string, int>();
+        int i = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -46,22 +50,24 @@ namespace RESI.Sorter
 
             RunFlowDoc.Blocks.Add(Runparagraph);
             Connectlist.Document = RunFlowDoc;
-            LiteDBHelper.Ins.InitDB("DoorDB", Environment.CurrentDirectory + "/");
+          
             brush = FindResource("AccentColorBrush") as SolidColorBrush;
-            TcpServer = new SocketManager(4000);
+            TcpServer = new SocketManager(4000, 5);
             TcpServer.OnReceiveMsg += TcpServer_OnReceiveMsg;
             TcpServer.OnConnected += TcpServer_OnConnected;
             TcpServer.OnDisConnected += TcpServer_OnDisConnected;
             TcpServer.Start();
-            AddLine("分拣机构连接中...",1);
+            AddLine("分拣机构连接中...", 1);
             Items = new[]
             {
                 new ContorllerItem("主页",new MainView()),
                 new ContorllerItem("查询",new QueryView()),
                 new ContorllerItem("设置",new SettingMainView()),
             };
+            this.Loaded += MainWindow_Loaded;
             Task.Run(() =>
             {
+              
                 //DateTime LastLoadTime = DateTime.Now;
                 //try
                 //{
@@ -98,7 +104,22 @@ namespace RESI.Sorter
                 //    }
                 //}
             });
+
         }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in CacheData.Ins.SortRules)
+            {
+                if (!SortTime.ContainsKey(item.door_code))
+                {
+                    SortTime.Add(item.door_code, item.sort_time);
+                }
+                else
+                    continue;
+            }
+        }
+        #region Business
 
         private void TcpServer_OnDisConnected(SocketManager.SocketInfo socketInfo)
         {
@@ -110,21 +131,38 @@ namespace RESI.Sorter
         private void TcpServer_OnConnected(SocketManager.SocketInfo socketInfo)
         {
             string remote = socketInfo.socket.RemoteEndPoint.ToString();
-            if (remote == "192.168.3.11")
+            if (remote == "127.0.0.1:2000")
             {
                 if (dicTcp.Keys.Contains("SCAN"))
                     dicTcp["SCAN"] = remote;
                 else
                     dicTcp.Add("SCAN", remote);
+
+                AddLine("称重扫码连接成功", 0);
             }
-            AddLine("分拣机械连接成功",0);
         }
 
         private void TcpServer_OnReceiveMsg(SocketManager.SocketInfo socketInfo)
         {
 
         }
-
+        //分拣
+        private void Sort(string barcode)
+        {
+            var temp = CacheData.Ins.LiteDBHelper.GetCollection<Record>().FindOne(a => a.barcode == barcode);
+            if (temp != null)
+            {
+                //TODO
+            }
+        }
+        //打印
+        private void Print(string doorCode)
+        {
+            int sortTime = SortTime[doorCode];
+          //  var temp = CacheData.Ins.LiteDBHelper.GetCollection<Record>().Find(a => (DateTime.Now-a.time).TotalSeconds> sortTime);
+            //TODO
+        }
+        #endregion
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
 
@@ -186,9 +224,18 @@ namespace RESI.Sorter
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-
+            this.WindowState = WindowState.Minimized;
         }
-
+        private void dbBackup()
+        {
+            LiteDBHelper LiteDBHelper = new LiteDBHelper();
+            LiteDBHelper.InitDB("SortDB" + DateTime.Now.ToString("HHmmss"), Environment.CurrentDirectory + "/DB/");
+            DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
+            var temp = CacheData.Ins.RecordDB.GetCollection<Record>().Find(a => a.time < time.DateTimeToUnixTimestamp()).ToList();
+            var scu = LiteDBHelper.Insert(temp);
+            if (scu > 0)
+                CacheData.Ins.RecordDB.Delete<Record>(Query.LT("time", time.DateTimeToUnixTimestamp()));
+        }
         private void CloseWindow_OnClick(object sender, RoutedEventArgs e)
         {
             this.Close();

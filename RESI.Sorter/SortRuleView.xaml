@@ -11,73 +11,21 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
-            <Button Margin="10 5 5 5" Click="btnDoorAdd_Click">新增</Button>
-            <Button Margin="5" Click="btnDoorEdit_Click">修改</Button>
-            <Button Margin="5" Click="btnDoorDel_Click">删除</Button>
-        </StackPanel>
         <StackPanel Grid.Column="2" Orientation="Horizontal">
             <Button Margin="10 5 5 5" Click="btnRuleAdd_Click">新增</Button>
             <Button Margin="5" Click="btnRuleEdit_Click">修改</Button>
             <Button Margin="5" Click="btnRuleDel_Click">删除</Button>
             <Button Margin="5" Click="btnExcel_Click">导出模板</Button>
             <Button Margin="5" Click="btnExcelIn_Click">导入</Button>
-           
+            <ComboBox Name="cmbcase" Width="150" Margin="5"></ComboBox>
+            <Button Margin="5" Click="btnActive_Click">启用方案</Button>
         </StackPanel>
-        <CheckBox x:Name="chkDoorEdit" Visibility="Collapsed"></CheckBox>
-        <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Width="2" Margin="2,0,2,0" Background="Gray"
-                      VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-        <md:DrawerHost IsRightDrawerOpen="{Binding ElementName=chkDoorEdit, Path=IsChecked}"  Grid.Row="1">
-            <md:DrawerHost.RightDrawerContent >
-                <Border>
-                    <Grid Width="200" VerticalAlignment="Top" HorizontalAlignment="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock  x:Name="txtDoorTitle" Margin="0 30 0 50" HorizontalAlignment="Center" Grid.ColumnSpan="2" FontSize="20">修改</TextBlock>
-                        <TextBlock Margin="5 5 0 5" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">分拣口编号：</TextBlock>
-                        <TextBox Margin="0 5 5 5" Grid.Column="1" Grid.Row="1" Text="{Binding SortDoor.door_code}"></TextBox>
-                        <TextBlock Margin="5 5 0 5" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">分拣口名称：</TextBlock>
-                        <TextBox Margin="0 5 5 5" Grid.Column="1" Grid.Row="2" Text="{Binding SortDoor.door_name}"></TextBox>
-                        <Button Margin="5 20 5 5" Grid.Row="3" Click="btnDoorSave_Clike">保存</Button>
-                        <Button Margin="5 20 5 5" Grid.Row="4" Grid.Column="1" Click="btnDoorCancel_click">取消</Button>
-                    </Grid>
-                </Border>
-            </md:DrawerHost.RightDrawerContent >
-            <DataGrid  x:Name="mygrid"  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ItemsSource="{Binding SortDoors,Mode=TwoWay}"  CanUserSortColumns="False" 
-                  materialDesign:DataGridAssist.ColumnHeaderPadding="4"  
-                  CanUserAddRows="False" IsReadOnly="True" 
-                  SelectedValue="{Binding SortDoor}"  SelectionChanged="Mygrid_SelectionChanged"
-                  AutoGenerateColumns="False" >
-                <DataGrid.Resources>
-                    <DataTemplate x:Key="switchActive">
-                        <ToggleButton Tag="{Binding}" Click="btnActive_Click" IsChecked="{Binding active}" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Center"/>
-                    </DataTemplate>
-
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding door_code}" IsReadOnly="True"  CanUserSort="False" FontSize="15" Header="分拣口编号"  Width="5*" />
-                    <DataGridTextColumn Binding="{Binding door_name}" IsReadOnly="True"   CanUserSort="False" FontSize="15"  Header="分拣口名称"  Width="10*" />
-                    <DataGridTextColumn Binding="{Binding door_name}" IsReadOnly="True"   CanUserSort="False" FontSize="15"  Header="分拣耗时"  Width="5*" />
-                    <DataGridTemplateColumn CellTemplate="{StaticResource switchActive}"  Header="激活" Width="10*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </md:DrawerHost>
+        
         <CheckBox x:Name="chkRuleEdit" Visibility="Collapsed"></CheckBox>
         <md:DrawerHost IsRightDrawerOpen="{Binding ElementName=chkRuleEdit, Path=IsChecked}" Grid.Column="2" Grid.Row="1">
             <md:DrawerHost.RightDrawerContent >
@@ -90,20 +38,25 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock x:Name="txtRuleTitle" Margin="0 30 0 50" HorizontalAlignment="Center" Grid.ColumnSpan="2" FontSize="20">修改</TextBlock>
-                        <TextBlock Margin="5 5 0 5" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">分拣口：</TextBlock>
-                        <ComboBox  Grid.Column="2" Grid.Row="1"  Width="100" Text="{Binding SortRule.rule_name}" SelectedValue="{Binding SortRule.door_code}"  SelectedValuePath="door_code" DisplayMemberPath="door_name" ItemsSource="{Binding SortDoors, Mode=TwoWay}" ></ComboBox>
-                        <TextBlock Margin="5 5 0 5" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">站点编号：</TextBlock>
-                        <TextBox Margin="0 5 5 5" Grid.Column="2" Grid.Row="2" Text="{Binding SortRule.rule_id}"></TextBox>
-                        <TextBlock Margin="5 5 0 5" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">站点名称：</TextBlock>
-                        <TextBox Margin="0 5 5 5" Grid.Column="1" Grid.Row="3" Text="{Binding SortRule.rule_name}"></TextBox>
-                        <Button Margin="5 20 5 5" Grid.Row="4" Click="btnRuleSave_Click">保存</Button>
-                        <Button Margin="5 20 5 5" Grid.Row="4" Grid.Column="1" Click="btnRuleCancel_Click">取消</Button>
+                        <TextBlock Margin="5 5 0 5" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">分拣方案：</TextBlock>
+                        <TextBox Margin="0 5 5 5" Grid.Column="2" Grid.Row="1"  Width="100" Text="{Binding SortRule.case_name}" ></TextBox>
+                        <TextBlock Margin="5 5 0 5" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">分拣口代码：</TextBlock>
+                        <TextBox Margin="0 5 5 5" Grid.Column="2" Grid.Row="2"  Width="100" Text="{Binding SortRule.door_code}" ></TextBox>
+                        <TextBlock Margin="5 5 0 5" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">分拣口名称：</TextBlock>
+                        <TextBox Margin="0 5 5 5" Grid.Column="2" Grid.Row="3"  Width="100" Text="{Binding SortRule.door_name}" ></TextBox>
+                        <TextBlock Margin="5 5 0 5" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center">站点代码：</TextBlock>
+                        <TextBox Margin="0 5 5 5" Grid.Column="2" Grid.Row="4" Text="{Binding SortRule.rule_code}"></TextBox>
+                        <TextBlock Margin="5 5 0 5" Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center">站点名称：</TextBlock>
+                        <TextBox Margin="0 5 5 5" Grid.Column="1" Grid.Row="5" Text="{Binding SortRule.rule_name}"></TextBox>
+                        <Button Margin="35 20 35 5" Grid.Row="6" Grid.ColumnSpan="2" Click="btnRuleSave_Click">保存</Button>
                     </Grid>
                 </Border>
             </md:DrawerHost.RightDrawerContent >
@@ -116,11 +69,25 @@
                 <DataGrid.Resources>
                     <local:SortRuleConveter x:Key="SortRuleConveter"/>
                 </DataGrid.Resources>
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding rule_id}" IsReadOnly="True"   FontSize="15" Header="站点编号"  Width="5*" />
-                <DataGridTextColumn Binding="{Binding rule_name}" IsReadOnly="True"    FontSize="15"  Header="站点名称"  Width="10*" />
-                <DataGridTextColumn Binding="{Binding door_code,Converter={StaticResource SortRuleConveter}}" IsReadOnly="True"   FontSize="15"  Header="分拣口"  Width="10*" />
-            </DataGrid.Columns>
+                <DataGrid.CellStyle>
+                    <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource  MaterialDesignDataGridCell}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding active}" Value="false">
+                                <Setter Property="Foreground" Value="Gray" />
+                            </DataTrigger>
+                          
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Binding="{Binding case_name}" IsReadOnly="True"   FontSize="15"  Header="分拣方案"  Width="10*" />
+                    <DataGridTextColumn Binding="{Binding door_code}" IsReadOnly="True"   FontSize="15"  Header="分拣口代码"  Width="5*" />
+                    <DataGridTextColumn Binding="{Binding door_name}" IsReadOnly="True"   FontSize="15"  Header="分拣口名称"  Width="10*" />
+                    <DataGridTextColumn Binding="{Binding rule_code}" IsReadOnly="True"   FontSize="15" Header="站点代码"  Width="5*" />
+                    <DataGridTextColumn Binding="{Binding rule_name}" IsReadOnly="True"    FontSize="15"  Header="站点名称"  Width="10*" />
+                    <DataGridTextColumn Binding="{Binding active,Converter={StaticResource SortRuleConveter}}" IsReadOnly="True"    FontSize="15"  Header="状态"  Width="5*" />
+                </DataGrid.Columns>
         </DataGrid>
         </md:DrawerHost>
     </Grid>

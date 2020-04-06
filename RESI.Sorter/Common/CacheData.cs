@@ -1,4 +1,5 @@
 ﻿using LH.Sorter.Util.LiteDB;
+using RESI.Sorter.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -29,15 +30,19 @@ namespace RESI.Sorter.Common
         }
         public CacheData()
         {
-
-            SortDoors.Clear();
+            LiteDBHelper = new LiteDBHelper();
+            LiteDBHelper.InitDB("SortDB", Environment.CurrentDirectory + "/DB/");
+            RecordDB = new LiteDBHelper();
+            RecordDB.InitDB("RecordDB", Environment.CurrentDirectory + "/DB/");
             SortRules.Clear();
-            var temp = LiteDBHelper.Ins.GetCollection<SortDoor>().FindAll().ToList();
-            SortDoors.AddRange(temp);
-            var temprule = LiteDBHelper.Ins.GetCollection<SortRule>().FindAll().ToList();
+            var temprule = LiteDBHelper.GetCollection<SortRule>().FindAll().ToList();
             SortRules.AddRange(temprule);
+            Sys_Paras.datas= LiteDBHelper.GetCollection<Sys_Para>().FindAll().ToList();
+
         }
-        public List<SortDoor> SortDoors = new List<SortDoor>();
         public List<SortRule> SortRules = new List<SortRule>();
+        public Sys_paras Sys_Paras { get; set; } = new Sys_paras();
+        public LiteDBHelper LiteDBHelper { get; set; }
+        public LiteDBHelper RecordDB { get; set; }
     }
 }

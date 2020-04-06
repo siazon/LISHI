@@ -4,9 +4,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RESI.Sorter"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </Grid.Resources>
+        <Button Click="btnSave_Click" Width="100" Grid.ColumnSpan="2">保存</Button>
+        <TextBlock Grid.Row="1">是否上传重量：</TextBlock>
+        <ToggleButton Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="5" Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="False" />
+        <TextBlock Grid.Row="2">空箱重量：</TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="1" materialDesign:HintAssist.Hint="请按格式输入:(小箱=1000g;中箱=1500g)" ></TextBox>
     </Grid>
 </UserControl>

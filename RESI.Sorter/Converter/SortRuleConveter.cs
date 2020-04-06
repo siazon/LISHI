@@ -13,15 +13,19 @@ namespace RESI.Sorter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value==null)
             {
-                return "缺省";
+                return "禁用";
             }
-            var temp = CacheData.Ins.SortDoors.FirstOrDefault(a => a.door_code == value.ToString());
-            if (temp == null)
-                return "缺省";
             else
-                return temp.door_name;
+            {
+                if ((bool)value)
+                {
+                    return "启用";
+                }
+                else
+                    return "禁用";
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

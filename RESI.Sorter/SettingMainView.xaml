@@ -32,7 +32,7 @@
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="viewmodel:ContorllerItem">
-                                <TextBlock Text="{Binding Name}" Margin="52 20" FontSize="25"/>
+                                <TextBlock Text="{Binding Name}" Margin="42 15" FontSize="25"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

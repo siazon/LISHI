@@ -13,29 +13,11 @@ namespace LH.Sorter.Util.LiteDB
     {
         private static object obj=new object();
         
-        public static LiteDBHelper _instance = null;
 
         public static string DBNAME = "DEFAULT";
         public string PATH;
         public string fileName;
-        public static LiteDBHelper Ins
-        {
-            get
-            {
-                lock (obj)
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new LiteDBHelper();
-
-                    }
-
-                    return _instance;
-
-                }
-            }
-
-        }
+   
         public LiteDBHelper() {
 
 
@@ -50,7 +32,7 @@ namespace LH.Sorter.Util.LiteDB
 
             DBNAME = dbName;
             PATH = path;
-            fileName = PATH + "\\LiteDB" + DBNAME+".db";
+            fileName = PATH + "\\" + DBNAME+".db";
 
         }
 

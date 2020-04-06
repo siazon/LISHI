@@ -12,7 +12,8 @@ namespace RESI.Sorter.Model
         public string barcode { get; set; }
         public string door { get; set; }
         public string status { get; set; }
-        public DateTime time { get; set; }
+        public long time { get; set; }
+        public string timeStr { get; set; }
 
     }
 }

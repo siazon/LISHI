@@ -27,9 +27,9 @@ namespace RESI.Sorter
         public event OnReceiveMsgHandler OnReceiveMsg;
         public event OnReceiveMsgHandler OnDisConnected;
 
-        public SocketManager(int port,string ip="0.0.0.0")
+        public SocketManager(int port,int _length, string ip = "0.0.0.0")
         {
-
+            length = _length;
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress _ip = IPAddress.Parse(ip);
             _endPoint = new IPEndPoint(_ip, port);
@@ -186,15 +186,33 @@ namespace RESI.Sorter
                         info.socket.Close();
                         return;
                     }
-                    if (OnReceiveMsg != null)
-                        OnReceiveMsg(info);
-                    //OnReceiveMsg(info.socket.RemoteEndPoint.ToString(),info.buffer);
+                        Receive(info);
                 }
             }
             //新增的错误处理机制
             catch (Exception err)
             {
                 Console.Write(err.Message);
+            }
+        }
+        int length = 0;
+        private void Receive(SocketInfo info)
+        {
+            info.bufferPool.AddRange(info.msgBuffer);
+            while (info.bufferPool.Count >= length)
+            {
+                if (info.bufferPool.Count >= length)
+                {
+                    byte[] buffmsg = info.bufferPool.GetRange(0, length).ToArray();
+                    info.resultBuffer = buffmsg;
+                    OnReceiveMsg?.Invoke(info);
+                    info.bufferPool.RemoveRange(0, length);
+                }
+                else if (info.bufferPool.Count < length)
+                {
+                    break;
+                }
+              
             }
         }
 
@@ -317,6 +335,8 @@ namespace RESI.Sorter
             public byte[] msgBuffer = null;
             public bool isConnected = false;
 
+            public byte[] resultBuffer = null;
+            public List<byte> bufferPool = new List<byte>();
             public SocketInfo()
             {
                 buffer = new byte[1024 * 4];

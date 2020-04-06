@@ -68,6 +68,34 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <Style TargetType="local:TitleTextBox">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="UndoLimit" Value="0"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="local:TitleTextBox">
+                            <Border x:Name="OuterBorder" BorderBrush="#8b99bc" BorderThickness="0" CornerRadius="5" >
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock x:Name="PART_TitleTextBlock" Text="{Binding Title}" Foreground="Black" VerticalAlignment="Center" Margin="5,0"/>
+                                    <Border Grid.Column="2" Background="White" CornerRadius="3" BorderBrush="{StaticResource  MaterialDesignTextBoxBorder}" BorderThickness="1">
+                                        <ScrollViewer x:Name="PART_ContentHost" Margin="5,0" VerticalAlignment="Center" FontSize="14"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
