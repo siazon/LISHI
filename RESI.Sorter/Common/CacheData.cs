@@ -37,7 +37,7 @@ namespace RESI.Sorter.Common
             SortRules.Clear();
             var temprule = LiteDBHelper.GetCollection<SortRule>().FindAll().ToList();
             SortRules.AddRange(temprule);
-            Sys_Paras.datas= LiteDBHelper.GetCollection<Sys_Para>().FindAll().ToList();
+            Sys_Paras.datas = LiteDBHelper.GetCollection<Sys_Para>().FindAll().ToList();
 
         }
         public List<SortRule> SortRules = new List<SortRule>();

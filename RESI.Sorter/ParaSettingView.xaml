@@ -37,8 +37,16 @@
         </Grid.Resources>
         <Button Click="btnSave_Click" Width="100" Grid.ColumnSpan="2">保存</Button>
         <TextBlock Grid.Row="1">是否上传重量：</TextBlock>
-        <ToggleButton Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="5" Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="False" />
+        <ToggleButton x:Name="SwIsUpLoad" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="5" Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="False" />
         <TextBlock Grid.Row="2">空箱重量：</TextBlock>
-        <TextBox Grid.Row="2" Grid.Column="1" materialDesign:HintAssist.Hint="请按格式输入:(小箱=1000g;中箱=1500g)" ></TextBox>
+        <TextBox x:Name="txtBoxInfo" Tag="空箱重量" Grid.Row="2" Grid.Column="1" materialDesign:HintAssist.Hint="请按格式输入:(小箱=1000;中箱=1500),单位：克" ></TextBox>
+        <TextBlock Grid.Row="3">分拣时长：</TextBlock>
+        <TextBox x:Name="txtDoorSortingTime" Tag="分拣时长"  Grid.Row="3" Grid.Column="1" materialDesign:HintAssist.Hint="请按格式输入:(1=1000;2=1000;3=1500;4=1500),单位：毫秒" ></TextBox>
+        <TextBlock Grid.Row="4">扫称IP端口：</TextBlock>
+        <TextBox x:Name="txtScale" Tag="扫称IP端口"  Grid.Row="4" Grid.Column="1" materialDesign:HintAssist.Hint="可以为同一IP,通过端口号区别不同的连接" ></TextBox>
+        <TextBlock Grid.Row="5">顶扫IP端口：</TextBlock>
+        <TextBox x:Name="txtScan" Tag="顶扫IP端口"  Grid.Row="5" Grid.Column="1" materialDesign:HintAssist.Hint="可以为同一IP,通过端口号区别不同的连接" ></TextBox>
+        <TextBlock Grid.Row="6">分拣机IP端口：</TextBlock>
+        <TextBox x:Name="txtSorter" Tag="分拣机IP端口"  Grid.Row="6" Grid.Column="1" materialDesign:HintAssist.Hint="可以为同一IP,通过端口号区别不同的连接" ></TextBox>
     </Grid>
 </UserControl>

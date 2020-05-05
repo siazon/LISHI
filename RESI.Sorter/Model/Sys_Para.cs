@@ -28,7 +28,7 @@ namespace RESI.Sorter.Model
                     return datas[j].para_value;
                 }
             }
-            throw new System.ArgumentOutOfRangeException(testDay, "testDay must be in the form \"Sun\", \"Mon\", etc");
+            return "";
         }
         public string this[string index]   //索引器
         {

@@ -50,7 +50,7 @@ namespace RESI.Sorter
 
             RunFlowDoc.Blocks.Add(Runparagraph);
             Connectlist.Document = RunFlowDoc;
-          
+
             brush = FindResource("AccentColorBrush") as SolidColorBrush;
             TcpServer = new SocketManager(4000, 5);
             TcpServer.OnReceiveMsg += TcpServer_OnReceiveMsg;
@@ -67,7 +67,18 @@ namespace RESI.Sorter
             this.Loaded += MainWindow_Loaded;
             Task.Run(() =>
             {
-              
+                while (true)
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        txtClock.Text = DateTime.Now.ToLongString();
+                    });
+                    Thread.Sleep(1000);
+                }
+            });
+            Task.Run(() =>
+            {
+
                 //DateTime LastLoadTime = DateTime.Now;
                 //try
                 //{
@@ -131,12 +142,30 @@ namespace RESI.Sorter
         private void TcpServer_OnConnected(SocketManager.SocketInfo socketInfo)
         {
             string remote = socketInfo.socket.RemoteEndPoint.ToString();
-            if (remote == "127.0.0.1:2000")
+            if (remote == CacheData.Ins.Sys_Paras["ScaleIP"])
             {
-                if (dicTcp.Keys.Contains("SCAN"))
-                    dicTcp["SCAN"] = remote;
+                if (dicTcp.Keys.Contains("ScaleIP"))
+                    dicTcp["ScaleIP"] = remote;
                 else
-                    dicTcp.Add("SCAN", remote);
+                    dicTcp.Add("ScaleIP", remote);
+
+                AddLine("称重扫码连接成功", 0);
+            }
+            else if (remote == CacheData.Ins.Sys_Paras["ScanIP"])
+            {
+                if (dicTcp.Keys.Contains("ScanIP"))
+                    dicTcp["ScanIP"] = remote;
+                else
+                    dicTcp.Add("ScanIP", remote);
+
+                AddLine("分拣顶扫连接成功", 0);
+            }
+            else if (remote == CacheData.Ins.Sys_Paras["SortIP"])
+            {
+                if (dicTcp.Keys.Contains("SortIP"))
+                    dicTcp["SortIP"] = remote;
+                else
+                    dicTcp.Add("SortIP", remote);
 
                 AddLine("称重扫码连接成功", 0);
             }
@@ -144,6 +173,19 @@ namespace RESI.Sorter
 
         private void TcpServer_OnReceiveMsg(SocketManager.SocketInfo socketInfo)
         {
+            string remote = socketInfo.socket.RemoteEndPoint.ToString();
+            if (remote == dicTcp["ScaleIP"])
+            {
+
+            }
+            else if (remote == dicTcp["ScanIP"])
+            {
+
+            }
+            else if (remote == dicTcp["SortIP"])
+            {
+
+            }
 
         }
         //分拣
@@ -159,7 +201,7 @@ namespace RESI.Sorter
         private void Print(string doorCode)
         {
             int sortTime = SortTime[doorCode];
-          //  var temp = CacheData.Ins.LiteDBHelper.GetCollection<Record>().Find(a => (DateTime.Now-a.time).TotalSeconds> sortTime);
+            //  var temp = CacheData.Ins.LiteDBHelper.GetCollection<Record>().Find(a => (DateTime.Now-a.time).TotalSeconds> sortTime);
             //TODO
         }
         #endregion
