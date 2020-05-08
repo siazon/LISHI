@@ -103,6 +103,7 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Record.cs" />
+    <Compile Include="Model\SortInfo.cs" />
     <Compile Include="Model\SortRule.cs" />
     <Compile Include="Model\Sys_Para.cs" />
     <Compile Include="ParaSettingView.xaml.cs">
