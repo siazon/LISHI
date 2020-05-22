@@ -47,7 +47,7 @@ namespace RESI.Sorter
         {
             InitializeComponent();
             this.DataContext = this;
-
+            WMSHelper.Ins.Login();
             RunFlowDoc.Blocks.Add(Runparagraph);
             Connectlist.Document = RunFlowDoc;
 
@@ -227,6 +227,8 @@ namespace RESI.Sorter
         SolidColorBrush brush = new SolidColorBrush(Colors.White);
         private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+        //    WMSHelper.Ins.UpdateWeight("", 2.8);
+             WMSHelper.Ins.GetInfo(DateTime.Now.AddMonths(-1), DateTime.Now);
             ItemListBox.SelectedIndex = 0;
             lbMain.Background = new SolidColorBrush(Colors.White);
             lbMain.Foreground = new SolidColorBrush(Colors.Black);

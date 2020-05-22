@@ -30,3 +30,4 @@ namespace RESI.Sorter.Model
 
     }
 }
+

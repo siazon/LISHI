@@ -54,7 +54,7 @@ namespace RESI.Sorter
                 return;
             }
             list = txtDoorSortingTime.Text.Split(';');
-            if (txtDoorSortingTime.Text.Length == 0 || list.Length == 0 || !txtDoorSortingTime.Text.Contains(";") || !txtDoorSortingTime.Text.Contains('='))
+              if (txtDoorSortingTime.Text.Length == 0 || list.Length == 0 || !txtDoorSortingTime.Text.Contains(";") || !txtDoorSortingTime.Text.Contains('='))
             {
                 MessageBox.Show(txtDoorSortingTime.Tag + ":输入值错误");
                 return;
