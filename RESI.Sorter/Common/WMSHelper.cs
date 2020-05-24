@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RESI.Sorter.Common
@@ -64,14 +65,25 @@ namespace RESI.Sorter.Common
             string datastr = Http.Post(Host + GetInfoUrl, dataJson);
             BaseResult result = JsonConvert.DeserializeObject<BaseResult>(datastr);
         }
-        public void UpdateWeight(string barcode, double Carton_Weight)
+        public void UpdateWeight(string barcode, double Carton_Weight, int i = 0)
         {
             var content = new { Carton_No = barcode, Carton_Weight };
             List<object> detail = new List<object>();
             detail.Add(content);
             var data = new { whgid = "slhk.wh1", token, detail };
             string dataJson = JsonConvert.SerializeObject(data);
-            string datastr= Http.Post(Host + UpdateWeightUrl, dataJson);
+            string datastr = Http.Post(Host + UpdateWeightUrl, dataJson);
+
+            dynamic ResultData = JsonConvert.DeserializeObject(datastr);
+            var resultCode = ResultData.code;
+            if (resultCode != "SUCCESS")
+            {
+                Thread.Sleep(20 * 1000);
+                i++;
+                if (i < 5)
+                    UpdateWeight(barcode, Carton_Weight);
+            }
+
         }
     }
 }
