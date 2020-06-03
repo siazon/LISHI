@@ -137,9 +137,9 @@ namespace RESI.Sorter
                 string ret = string.Empty;
                 webReq = WebRequest.Create(getUrl) as HttpWebRequest;
                 webReq.Method = "GET";
-                webReq.ContentType = "application/x-www-form-urlencoded";
+                webReq.ContentType = "application/json";
                 webReq.UserAgent = null;
-                webReq.Timeout = 1550;
+                //webReq.Timeout = 1550;
 
                 response = (HttpWebResponse)webReq.GetResponse();
                 //获得响应流

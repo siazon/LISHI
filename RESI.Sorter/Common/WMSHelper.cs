@@ -47,11 +47,20 @@ namespace RESI.Sorter.Common
         {
             token = Http.Get(Host + LoginUrl + "?apikey=" + ApiKey);
             dynamic data = JsonConvert.DeserializeObject(token);
-            var resultCode = data.resultCode;
-            if (resultCode == 0)
+            if (data!=null)
             {
-                token = data.token;
+                var resultCode = data.resultCode;
+
+
+
+
+
+                if (resultCode == 0)
+                {
+                    token = data.token;
+                }
             }
+            
         }
         public void GetInfo(DateTime startDate, DateTime endDate)
         {
